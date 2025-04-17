@@ -5,7 +5,11 @@ def estimate_heart_rate(signal, fps=30):
     if len(signal) < 21:
         return 0.0
     signal = signal - np.mean(signal)
-    b, a = butter(3, [0.75 / (fps / 2), 4.0 / (fps / 2)], btype='band')
+    nyquist = fps / 2
+    low = 0.75 / nyquist
+    high = min(4.0 / nyquist, 0.99)  # 필터 안정성 확보
+
+    b, a = butter(3, [low, high], btype='band')
     filtered = filtfilt(b, a, signal)
     f, pxx = periodogram(filtered, fs=fps)
     valid = (f >= 0.75) & (f <= 4.0)

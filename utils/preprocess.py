@@ -15,3 +15,14 @@ def preprocess_frame(frame, landmarks):
     roi = cv2.bitwise_and(frame, frame, mask=mask)
     x, y, rw, rh = cv2.boundingRect(np.array(pts))
     return roi[y:y+rh, x:x+rw]
+
+def draw_face_mask(frame, landmarks):
+    h, w = frame.shape[:2]
+    pts = []
+    for idx in forehead_indices:
+        lm = landmarks[idx]
+        x, y = int(lm.x * w), int(lm.y * h)
+        pts.append((x, y))
+    if pts:
+        cv2.polylines(frame, [np.array(pts, dtype=np.int32)], isClosed=True, color=(255, 0, 0), thickness=2)
+
