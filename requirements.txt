@@ -1,0 +1,6 @@
+opencv-python==4.7.0.72
+mediapipe==0.10.21
+torchvision==0.21.0
+numpy==1.26.4
+scipy==1.11.4
+matplotlib==3.8.4
