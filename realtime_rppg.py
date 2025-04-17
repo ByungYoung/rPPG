@@ -25,7 +25,6 @@ print("[INFO] 실시간 rPPG 시작 (q 키로 종료)")
 
 frame_window = []
 history = deque(maxlen=150)
-plot_history = []  # 평균 HR 그래프용
 
 # --- 로그 초기화 및 저장 ---
 def init_log():
@@ -50,10 +49,9 @@ def smooth_heart_rate(hr, window=5):
 # --- 실시간 플롯 ---
 def update_plot(ax):
     ax.clear()
-    ax.set_title("Average HR (smoothed)")
+    ax.set_title("Real-Time Heart Rate")
     ax.set_ylim(40, 120)
-    if plot_history:
-        ax.plot(plot_history)
+    ax.plot(history)
 
 # --- 로그 파일 초기화 ---
 init_log()
@@ -89,7 +87,6 @@ while True:
                     hr = history[-1] if history else 75
 
                 smoothed_hr = smooth_heart_rate(hr)
-                plot_history.append(smoothed_hr)
                 log_heart_rate(smoothed_hr)
                 cv2.putText(frame, f"HR: {smoothed_hr:.2f} bpm", (30, 60), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
 
