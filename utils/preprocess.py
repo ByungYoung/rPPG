@@ -1,12 +1,12 @@
 import cv2
 import numpy as np
 
-forehead_indices = [10, 338, 297, 332, 284]  # 이마 영역 랜드마크
+face_outline_indices = list(range(0, 468))
 
 def preprocess_frame(frame, landmarks):
     h, w = frame.shape[:2]
     pts = []
-    for idx in forehead_indices:
+    for idx in face_outline_indices:
         lm = landmarks[idx]
         x, y = int(lm.x * w), int(lm.y * h)
         pts.append((x, y))
@@ -19,9 +19,9 @@ def preprocess_frame(frame, landmarks):
 def draw_face_mask(frame, landmarks):
     h, w = frame.shape[:2]
     pts = []
-    for idx in forehead_indices:
+    for idx in face_outline_indices:
         lm = landmarks[idx]
         x, y = int(lm.x * w), int(lm.y * h)
         pts.append((x, y))
     if pts:
-        cv2.polylines(frame, [np.array(pts, dtype=np.int32)], isClosed=True, color=(255, 0, 0), thickness=2)
+        cv2.polylines(frame, [np.array(pts, dtype=np.int32)], isClosed=True, color=(0, 255, 255), thickness=1)
